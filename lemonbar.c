@@ -1339,13 +1339,13 @@ xconn (void)
     dpy = XOpenDisplay(NULL);
     if (!dpy) {
         fprintf(stderr, "Couldn't execute XOpenDisplay\n");
-        xcb_disconnect(c);
         exit(EXIT_FAILURE);
     }
 
     c = XGetXCBConnection(dpy);
     if (!c) {
-        fprintf (stderr, "Couldnt connect to X\n");
+        fprintf (stderr, "Couldn't connect to X\n");
+        XCloseDisplay(dpy);
         exit (EXIT_FAILURE);
     }
 
@@ -1519,8 +1519,6 @@ cleanup (void)
         xcb_free_gc(c, gc[GC_CLEAR]);
     if (gc[GC_ATTR])
         xcb_free_gc(c, gc[GC_ATTR]);
-    if (c)
-        xcb_disconnect(c);
     if (dpy)
         XCloseDisplay(dpy);
 }
